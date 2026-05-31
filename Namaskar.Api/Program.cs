@@ -79,7 +79,9 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-//app.UseHttpsRedirection();
+#if !DEBUG
+app.UseHttpsRedirection();
+#endif
 app.UseCors();
 app.UseRateLimiter();
 
