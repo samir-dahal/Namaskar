@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Namaskar.Api/Namaskar.Api.csproj" />
+  <Project Path="Namaskar.Extension/Namaskar.Extension.csproj" />
+</Solution>
