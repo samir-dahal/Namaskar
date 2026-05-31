@@ -291,6 +291,39 @@ node_modules/
 # Visual Studio 6 workspace options file
 *.opt
 
+# ─── Node / TypeScript / WXT Extension ────────────────────────────────
+
+# Dependencies
+extension/node_modules/
+
+# WXT build output & generated types
+extension/.output/
+extension/.wxt/
+
+# Vite / TypeScript build artifacts
+extension/dist/
+*.tsbuildinfo
+
+# Environment files — keep .example, ignore real secrets
+extension/.env
+extension/.env.local
+extension/.env.*.local
+# Production env is intentionally committed (no secrets, just API URL)
+# extension/.env.production
+
+# API secrets — appsettings.Development.json contains real API keys; never commit it.
+# Use environment variables (Pexels__ApiKey) or dotnet user-secrets in production.
+**/appsettings.Development.json
+
+# Test coverage
+coverage/
+
+# Misc editor/OS
+.DS_Store
+Thumbs.db
+*.orig
+*.rej
+
 # Visual Studio 6 auto-generated workspace file (contains which files were open etc.)
 *.vbw
 
@@ -361,3 +394,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+Skills
+/Namaskar.Api/appsettings.Development.json
