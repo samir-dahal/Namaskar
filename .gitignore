@@ -397,3 +397,4 @@ MigrationBackup/
 FodyWeavers.xsd
 Skills
 /Namaskar.Api/appsettings.Development.json
+/Namaskar.Api/appsettings.json
