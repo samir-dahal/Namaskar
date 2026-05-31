@@ -308,6 +308,7 @@ extension/dist/
 extension/.env
 extension/.env.local
 extension/.env.*.local
+extension/.env.production
 # Production env is intentionally committed (no secrets, just API URL)
 # extension/.env.production
 

@@ -1,0 +1,278 @@
+/* ─── Options page styles ────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Hind', 'Nirmala UI', 'Segoe UI', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  background: #0d1b2a;
+  color: #e8edf4;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.options-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+}
+
+.options-container {
+  width: min(560px, 100%);
+}
+
+/* Header */
+.options-header {
+  margin-bottom: 2.5rem;
+}
+
+.options-title {
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: #fff;
+}
+
+.options-sub {
+  font-size: 0.9rem;
+  color: rgba(232, 237, 244, 0.5);
+  margin-top: 0.15rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Sections */
+.options-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+}
+
+.options-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.section-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(232, 237, 244, 0.45);
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* Fields */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.field-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(232, 237, 244, 0.78);
+}
+
+.field-input {
+  padding: 0.65rem 0.9rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: #e8edf4;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  width: 100%;
+}
+
+.field-input::placeholder {
+  color: rgba(232, 237, 244, 0.28);
+}
+
+.field-input:focus {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Remove number input arrows */
+.field-input[type="number"]::-webkit-inner-spin-button,
+.field-input[type="number"]::-webkit-outer-spin-button {
+  opacity: 0.4;
+}
+
+.field-hint {
+  font-size: 0.78rem;
+  color: rgba(232, 237, 244, 0.38);
+}
+
+/* Toggle */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 0.15rem 0;
+}
+
+.toggle-label {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: rgba(232, 237, 244, 0.82);
+}
+
+.toggle-track {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.toggle-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-thumb {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: background 0.2s ease;
+}
+
+.toggle-thumb::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.toggle-input:checked + .toggle-thumb {
+  background: rgba(255, 217, 125, 0.3);
+  border-color: rgba(255, 217, 125, 0.5);
+}
+
+.toggle-input:checked + .toggle-thumb::after {
+  transform: translateX(20px);
+  background: #ffd97d;
+}
+
+/* Actions */
+.options-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 0.5rem;
+}
+
+.btn-save {
+  padding: 0.7rem 1.75rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0d1b2a;
+  background: #ffd97d;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: opacity 0.15s ease;
+  flex-shrink: 0;
+}
+
+.btn-save:hover {
+  opacity: 0.9;
+}
+
+.btn-danger {
+  padding: 0.7rem 1.25rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255, 130, 130, 0.82);
+  background: transparent;
+  border: 1px solid rgba(255, 130, 130, 0.22);
+  border-radius: 8px;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-danger:hover {
+  background: rgba(255, 130, 130, 0.07);
+  border-color: rgba(255, 130, 130, 0.4);
+}
+
+/* Footer */
+.options-footer {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 0.78rem;
+  color: rgba(232, 237, 244, 0.28);
+}
+
+.options-loading {
+  padding: 4rem;
+  text-align: center;
+  color: rgba(232, 237, 244, 0.4);
+}
+
+/* Segmented control */
+.segmented {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+  margin-top: 0.5rem;
+}
+
+.seg-btn {
+  padding: 0.4rem 1.1rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(232, 237, 244, 0.55);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.seg-btn:hover {
+  color: rgba(232, 237, 244, 0.85);
+}
+
+.seg-btn--active {
+  background: rgba(255, 255, 255, 0.10);
+  color: #e8edf4;
+}

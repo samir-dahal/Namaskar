@@ -1,0 +1,26 @@
+{
+  "name": "namaskar",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "wxt dev",
+    "dev:firefox": "wxt dev --browser firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build --browser firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip --browser firefox",
+    "typecheck": "tsc --noEmit",
+    "postinstall": "wxt prepare"
+  },
+  "dependencies": {
+    "react": "^19",
+    "react-dom": "^19"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@wxt-dev/module-react": "latest",
+    "typescript": "^5",
+    "wxt": "latest"
+  }
+}

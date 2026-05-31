@@ -1,0 +1,8 @@
+import { defineWebExtConfig } from "wxt";
+
+export default defineWebExtConfig({
+  binaries: {
+    edge: "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+  },
+  startUrls: ["about:newtab"],
+});

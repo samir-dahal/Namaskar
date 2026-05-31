@@ -1,0 +1,502 @@
+﻿/* ─── Hind (self-hosted, Devanagari + Latin) ────────────────────────────── */
+@font-face {
+  font-family: 'Hind';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/hind-v18-latin-regular.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0900-097F, U+0200-02AF;
+}
+
+@font-face {
+  font-family: 'Hind';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/hind-v18-latin-500.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0900-097F, U+0200-02AF;
+}
+
+@font-face {
+  font-family: 'Hind';
+  font-style: normal;
+  font-weight: 600 700;
+  font-display: swap;
+  src: url('/fonts/hind-v18-latin-700.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0900-097F, U+0200-02AF;
+}
+
+/* ─── Custom properties ─────────────────────────────────────────────── */
+:root {
+  --font: 'Hind', 'Nirmala UI', 'Segoe UI', system-ui, sans-serif;
+
+  --c-text: #ffffff;
+  --c-muted: rgba(255, 255, 255, 0.62);
+  --c-accent: #ffd97d;
+  --c-body-bg: #101820;
+
+  --shadow-text: 0 2px 24px rgba(0, 0, 0, 0.8), 0 1px 4px rgba(0, 0, 0, 0.6);
+  --shadow-sm:   0 1px 10px rgba(0, 0, 0, 0.65);
+
+  --radius-btn: 50%;
+}
+
+/* ─── Reset & base ──────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--c-text);
+  background-color: var(--c-body-bg);
+  background-image: var(--bg-image, none);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Background fade ───────────────────────────────────────────────── */
+.bg-fade {
+  position: fixed;
+  inset: 0;
+  background-color: var(--c-body-bg);
+  transition: opacity 0.9s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bg-fade--hidden {
+  opacity: 0;
+}
+
+/* ─── Gradient overlay — lock-screen style ──────────────────────────── */
+/* Strong left+bottom corner keeps text readable on any photo */
+.gradient-overlay {
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(
+      105deg,
+      rgba(0, 0, 0, 0.55) 0%,
+      rgba(0, 0, 0, 0.22) 40%,
+      transparent 68%
+    ),
+    linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.70) 0%,
+      rgba(0, 0, 0, 0.28) 38%,
+      transparent 62%
+    );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ─── Top-right weather ─────────────────────────────────────────────── */
+.top-bar {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.75rem;
+  z-index: 10;
+}
+
+/* ─── Top-center greeting ─────────────────────────────────────────── */
+.top-center {
+  position: fixed;
+  top: 1.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  text-align: center;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* ─── Content block — bottom-left anchor (Windows lock screen style) ── */
+.content-block {
+  position: fixed;
+  bottom: 5.5rem;   /* sits above the bottom bar */
+  left: 1.75rem;
+  z-index: 10;
+  pointer-events: none;
+  max-width: min(620px, 65vw);
+}
+
+/* ─── Date display ──────────────────────────────────────────────────── */
+.date-display {
+  text-align: left;
+  pointer-events: auto;
+  user-select: none;
+}
+
+/* ─── Greeting (top-center) ─────────────────────────────────────────── */
+.greeting {
+  font-size: clamp(1rem, 1.6vw, 1.3rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.68);
+  letter-spacing: 0.02em;
+  text-shadow: var(--shadow-sm);
+  margin-bottom: 0.5rem;
+  text-transform: none;
+}
+
+.greeting-name {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+/* ─── Hero BS date — the big number (Windows clock equivalent) ───────── */
+.date-hero {
+  font-size: clamp(2.8rem, 5.5vw, 5rem);
+  font-weight: 600;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: #fff;
+  text-shadow: var(--shadow-text);
+  margin-bottom: 0.45rem;
+}
+
+/* ─── Gregorian sub-line ─────────────────────────────────────────────── */
+.date-sub {
+  font-size: clamp(0.95rem, 1.8vw, 1.35rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.88);
+  letter-spacing: 0.005em;
+  text-shadow: var(--shadow-sm);
+  margin-bottom: 0;
+}
+
+.sub-sep {
+  opacity: 0.4;
+  margin: 0 0.2em;
+}
+
+/* ─── Events / tithi — secondary info block ─────────────────────────── */
+.date-meta {
+  margin-top: 0.85rem;
+  font-size: clamp(0.78rem, 1.25vw, 0.92rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.62);
+  letter-spacing: 0.01em;
+  text-shadow: var(--shadow-sm);
+  line-height: 1.55;
+}
+
+.meta-tithi {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.meta-sep {
+  opacity: 0.35;
+  margin: 0 0.25em;
+}
+
+.meta-events {
+  color: var(--c-accent);
+}
+
+.event-sep {
+  opacity: 0.4;
+  margin: 0 0.2em;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ─── Skeleton shimmer ──────────────────────────────────────────────── */
+.skeleton-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.skeleton {
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.06) 25%,
+    rgba(255, 255, 255, 0.13) 50%,
+    rgba(255, 255, 255, 0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+.skeleton-hero {
+  width: clamp(240px, 38vw, 480px);
+  height: clamp(2.8rem, 5.5vw, 5rem);
+  border-radius: 8px;
+}
+
+.skeleton-sub {
+  width: clamp(160px, 24vw, 320px);
+  height: clamp(0.95rem, 1.8vw, 1.35rem);
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ─── Weather widget (top-right) ────────────────────────────────────── */
+.weather-widget {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+  text-shadow: var(--shadow-sm);
+}
+
+.weather-top-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.weather-icon {
+  display: flex;
+  align-items: center;
+  opacity: 0.9;
+}
+
+.weather-temp {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: -0.01em;
+}
+
+.weather-city {
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.weather-offline {
+  font-size: 0.62rem;
+  color: rgba(255, 255, 255, 0.38);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ─── Bottom bar ────────────────────────────────────────────────────── */
+.bottom-bar {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.75rem;
+  right: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+.bottom-bar-left,
+.bottom-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* ─── Photo attribution ─────────────────────────────────────────────── */
+.attr-location {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.48);
+  text-shadow: var(--shadow-sm);
+  letter-spacing: 0.01em;
+}
+
+.attr-sep {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.attr-link {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.38);
+  text-shadow: var(--shadow-sm);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: color 0.18s ease;
+}
+
+.attr-link:hover {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.offline-badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: rgba(255, 200, 200, 0.62);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: var(--shadow-sm);
+}
+
+/* ─── Icon buttons ──────────────────────────────────────────────────── */
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-btn);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 0, 0, 0.22);
+  color: rgba(255, 255, 255, 0.58);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.icon-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.icon-btn:disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.icon-btn--spinning svg {
+  animation: spin 0.85s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─── Setup overlay ─────────────────────────────────────────────────── */
+.setup-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 16, 26, 0.88);
+  backdrop-filter: blur(28px) saturate(120%);
+  -webkit-backdrop-filter: blur(28px) saturate(120%);
+  z-index: 20;
+}
+
+.setup-card {
+  width: min(420px, 92vw);
+  padding: 2.75rem 2.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 20px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.setup-header {
+  margin-bottom: 2rem;
+}
+
+.setup-logo {
+  font-size: 2.25rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: #fff;
+  margin-bottom: 0.75rem;
+}
+
+.setup-tagline {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.78);
+  margin-bottom: 0.3rem;
+  line-height: 1.5;
+}
+
+.setup-subtitle {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.42);
+  letter-spacing: 0.02em;
+}
+
+.setup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.setup-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.setup-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: var(--font);
+  font-size: 1rem;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.18s ease, background 0.18s ease;
+  caret-color: var(--c-accent);
+}
+
+.setup-input::placeholder {
+  color: rgba(255, 255, 255, 0.32);
+}
+
+.setup-input:focus {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.setup-input--error {
+  border-color: rgba(255, 120, 120, 0.5);
+}
+
+.setup-error {
+  font-size: 0.8rem;
+  color: rgba(255, 160, 160, 0.9);
+}
+
+.setup-btn {
+  margin-top: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  font-family: var(--font);
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0d1b2a;
+  background: var(--c-accent);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: opacity 0.18s ease, transform 0.12s ease;
+}
+
+.setup-btn:hover {
+  opacity: 0.92;
+}
+
+.setup-btn:active {
+  transform: scale(0.98);
+}
