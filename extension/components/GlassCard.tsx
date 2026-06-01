@@ -48,8 +48,8 @@ export function GlassCard({
             {isNe ? formatBsDateNe(nepaliDate) : formatBsDateEn(nepaliDate)}
           </h1>
           <p className="date-sub">
-            {isNe ? nepaliDate.weekday_ne : nepaliDate.weekday}
-            <span className="sub-sep" aria-hidden="true"> · </span>
+            {isNe ? nepaliDate.weekday_ne : null}
+            {isNe && gregorianDate ? (<span className="sub-sep" aria-hidden="true"> · </span>) : null}
             {gregorianDate?.formatted}
           </p>
         </>
