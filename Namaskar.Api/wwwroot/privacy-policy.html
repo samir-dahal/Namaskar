@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy — Namaskar</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 1rem;
+            line-height: 1.75;
+            color: #1a1a2e;
+            background: #f8f7f4;
+        }
+
+        header {
+            background: #0D1B2A;
+            color: #fff;
+            padding: 3rem 2rem 2.5rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        header p {
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+            opacity: 0.65;
+        }
+
+        main {
+            max-width: 760px;
+            margin: 3rem auto;
+            padding: 0 1.5rem 4rem;
+        }
+
+        section {
+            margin-bottom: 2.5rem;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0D1B2A;
+            margin-bottom: 0.6rem;
+            padding-bottom: 0.35rem;
+            border-bottom: 2px solid #e2ddd6;
+        }
+
+        p {
+            margin-top: 0.6rem;
+        }
+
+        ul {
+            margin-top: 0.6rem;
+            padding-left: 1.4rem;
+        }
+
+        ul li {
+            margin-top: 0.35rem;
+        }
+
+        a {
+            color: #c0392b;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.15rem 0.6rem;
+            border-radius: 999px;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #888;
+            padding: 2rem 1rem;
+            border-top: 1px solid #e2ddd6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Namaskar — Nepali New Tab</h1>
+        <p>Privacy Policy &nbsp;·&nbsp; Effective date: June 1, 2026</p>
+    </header>
+
+    <main>
+
+        <section>
+            <h2>Overview</h2>
+            <p>
+                Namaskar is a browser extension that replaces your new tab page with a
+                beautiful Nepal photography background, the current Bikram Sambat (BS) date,
+                Nepali festivals and tithis, and an optional local weather widget.
+            </p>
+            <p>
+                <strong>We collect no personal data. We run no analytics. We serve no ads.</strong>
+                This policy explains in plain language what the extension does and does not do with
+                information on your device.
+            </p>
+        </section>
+
+        <section>
+            <h2>Data we collect <span class="badge">Nothing</span></h2>
+            <p>
+                Namaskar does <strong>not</strong> collect, transmit, sell, or share any personal
+                information. Specifically:
+            </p>
+            <ul>
+                <li>No names, email addresses, or account identifiers are collected.</li>
+                <li>No browsing history, search queries, or page visit data are collected.</li>
+                <li>No keystroke or click-stream analytics are recorded.</li>
+                <li>No crash reports or telemetry are sent anywhere.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Data stored on your device</h2>
+            <p>
+                The following information is saved in your browser's local storage using the
+                standard <code>browser.storage.local</code> API. It <strong>never leaves your
+                    device</strong> and is not accessible to anyone other than the extension itself.
+            </p>
+            <ul>
+                <li><strong>Display name</strong> — an optional first name shown in the greeting (e.g. "Good morning,
+                    Sita.").</li>
+                <li><strong>City name</strong> — the city you enter for weather display.</li>
+                <li><strong>Geographic coordinates</strong> — latitude and longitude derived from the city you choose
+                    during setup, used solely to fetch weather data.</li>
+                <li><strong>Preferences</strong> — language choice (English / Nepali), and toggles for the weather and
+                    tithi widgets.</li>
+                <li><strong>Daily cache</strong> — a one-hour cached copy of the Nepali date, events, and background
+                    photo URL to avoid redundant network requests.</li>
+            </ul>
+            <p>You can delete all stored data at any time by removing the extension.</p>
+        </section>
+
+        <section>
+            <h2>Network requests</h2>
+            <p>The extension makes two types of outbound requests:</p>
+
+            <h3 style="font-size:1rem; font-weight:600; margin-top:1rem;">1. Namaskar API
+                (<code>namaskar.runasp.net</code>)</h3>
+            <p>
+                Once per hour, the extension fetches today's Nepali date, festival events, tithi,
+                and a background photo URL from our own API. <strong>No user data is included in
+                    this request</strong> — it is a plain unauthenticated GET request identical for
+                every user.
+            </p>
+
+            <h3 style="font-size:1rem; font-weight:600; margin-top:1rem;">2. Open-Meteo weather API
+                (<code>api.open-meteo.com</code>)</h3>
+            <p>
+                If you enable the weather widget, the extension sends your <strong>latitude and
+                    longitude</strong> (which you provided voluntarily) to
+                <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a>
+                to retrieve the current temperature and weather condition. Open-Meteo is a
+                free, open-source weather service that requires no API key and
+                <a href="https://open-meteo.com/en/terms" target="_blank" rel="noopener">does not
+                    log or sell user data</a>. No other information is sent in this request.
+            </p>
+        </section>
+
+        <section>
+            <h2>Background photos</h2>
+            <p>
+                Background images are sourced from
+                <a href="https://www.pexels.com" target="_blank" rel="noopener">Pexels</a>
+                via our server-side API and served as plain image URLs. The extension
+                displays photographer attribution as required by Pexels' license.
+                No user data is sent to Pexels.
+            </p>
+        </section>
+
+        <section>
+            <h2>Permissions explained</h2>
+            <ul>
+                <li>
+                    <strong><code>storage</code></strong> — saves your settings and daily cache
+                    locally in the browser. Nothing is synced to any server.
+                </li>
+                <li>
+                    <strong><code>alarms</code></strong> — triggers a once-per-hour background
+                    refresh of the daily data cache. No user-visible actions are taken.
+                </li>
+                <li>
+                    <strong><code>https://api.open-meteo.com/*</code></strong> — allows the
+                    weather request described above. This host permission is required by
+                    the browser to make cross-origin requests from an extension.
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Third-party services</h2>
+            <p>The extension interacts with the following third-party services:</p>
+            <ul>
+                <li>
+                    <strong>Open-Meteo</strong> —
+                    <a href="https://open-meteo.com/en/terms" target="_blank" rel="noopener">Terms &amp; Privacy</a>
+                </li>
+                <li>
+                    <strong>Pexels</strong> (indirectly, via our API) —
+                    <a href="https://www.pexels.com/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a>
+                </li>
+            </ul>
+            <p>
+                We do not use Google Analytics, Facebook Pixel, Sentry, or any other analytics
+                or error-tracking service.
+            </p>
+        </section>
+
+        <section>
+            <h2>Children's privacy</h2>
+            <p>
+                Namaskar does not knowingly collect any information from anyone, including
+                children under the age of 13.
+            </p>
+        </section>
+
+        <section>
+            <h2>Changes to this policy</h2>
+            <p>
+                If we make material changes to this privacy policy, we will update the effective
+                date at the top of this page. Continued use of the extension after changes
+                constitutes acceptance of the updated policy.
+            </p>
+        </section>
+
+        <section>
+            <h2>Contact</h2>
+            <p>
+                Questions or concerns? Email us at
+                <a href="mailto:samirdahal175@gmail.com">samirdahal175@gmail.com</a>.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        &copy; 2026 Namaskar. Made with love for Nepal.
+    </footer>
+
+</body>
+
+</html>

@@ -82,6 +82,7 @@ if (app.Environment.IsDevelopment())
 #if !DEBUG
 app.UseHttpsRedirection();
 #endif
+app.UseStaticFiles();
 app.UseCors();
 app.UseRateLimiter();
 
@@ -90,6 +91,7 @@ DailyEndpoint.Map(app);
 BackgroundEndpoint.Map(app);
 WeatherEndpoint.Map(app);
 HealthEndpoint.Map(app);
+PrivacyPolicyEndpoint.Map(app);
 
 app.Run();
 
