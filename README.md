@@ -25,5 +25,5 @@ Every time you open a tab, you're greeted with a beautiful landscape photo from 
 - **No account, no tracking, no ads**
 
 ### Available on Chrome Web Store
-Simply download from extension store and you're all done!
+Simply [download](https://chromewebstore.google.com/detail/mikgnlcidggkkkpjcjngihcgelmfgjim) from extension store and you're all done!
 <img width="640" height="400" alt="image" src="https://github.com/user-attachments/assets/f06c1bba-08ef-4e41-8480-b474a14a8888" />
