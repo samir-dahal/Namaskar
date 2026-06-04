@@ -184,7 +184,7 @@ export default function Options() {
         </form>
 
         <footer className="options-footer">
-          <span>Namaskar v0.1.0</span>
+          <span>Namaskar v0.1.1</span>
         </footer>
       </div>
     </div>
