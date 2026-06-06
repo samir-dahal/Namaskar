@@ -6,7 +6,6 @@ export default defineConfig({
     name: "Namaskar — Nepali New Tab",
     description:
       "Beautiful Nepali new tab with Bikram Sambat date, festivals, and Nepal photography.",
-    version: "0.1.1",
     icons: {
       "16": "/icon-16.png",
       "32": "/icon-32.png",

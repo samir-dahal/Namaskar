@@ -42,7 +42,7 @@ export default function Popup() {
         <a href={optionsUrl} target="_blank" rel="noopener noreferrer" className="popup-settings-link">
           Settings
         </a>
-        <span className="popup-version">v0.1.0</span>
+        <span className="popup-version">v{browser.runtime.getManifest().version}</span>
       </div>
     </div>
   );
