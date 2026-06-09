@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using Google.GenAI;
 using Microsoft.Extensions.Caching.Memory;
 using PexelsDotNetSDK.Api;
 
@@ -9,15 +10,39 @@ public class BackgroundPhotoService
     private readonly PexelsClient _pexels;
     private readonly IMemoryCache _cache;
     private readonly ILogger<BackgroundPhotoService> _logger;
+    private readonly IConfiguration _config;
 
     // Rotate through Nepal-themed queries for variety
     private static readonly string[] Queries =
     [
+        // Nature & Geography
         "nepal landscape",
-        "kathmandu nepal",
         "himalaya nepal",
+        "nepal river",
+        "nepal valley",
+        "nepal waterfall",
+        "nepal lake",
+        "chitwan nepal",
+
+        // Cities & Landmarks
+        "kathmandu nepal",
         "pokhara nepal",
-        "nepal mountains",
+        "bhaktapur nepal",
+        "nepal temple",
+        "nepal stupa",
+        "nepal monastery",
+
+        // Culture & Life
+        "nepal village",
+        "nepal festival",
+        "nepal prayer flags",
+        "nepal market",
+        "nepal farmer",
+
+        // Mood & Atmosphere
+        "nepal sunrise",
+        "nepal fog",
+        "nepal sunset",
     ];
 
     // Reliable fallback photo (Pexels public domain)
@@ -34,11 +59,48 @@ public class BackgroundPhotoService
     public BackgroundPhotoService(
         PexelsClient pexels,
         IMemoryCache cache,
-        ILogger<BackgroundPhotoService> logger)
+        ILogger<BackgroundPhotoService> logger,
+        IConfiguration config)
     {
         _pexels = pexels;
         _cache  = cache;
         _logger = logger;
+        _config = config;
+    }
+
+    /// <summary>
+    /// Asks Gemini AI to generate a Nepal-specific photo search query.
+    /// Returns null if the API key / prompt is missing, the call fails, or the response is empty.
+    /// </summary>
+    private async Task<string?> GetGeminiQueryAsync()
+    {
+        var apiKey = _config["GeminiAI:ApiKey"];
+        var prompt = _config["GeminiAI:Prompt"];
+        var model = _config["GeminiAI:Model"];
+
+        if (string.IsNullOrWhiteSpace(apiKey) || 
+            string.IsNullOrWhiteSpace(prompt) || 
+            string.IsNullOrWhiteSpace(model))
+            return null;
+
+        try
+        {
+            var client = new Client(apiKey: apiKey);
+            //timeout - don't want to wait too long for AI response
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            var response = await client.Models.GenerateContentAsync(
+                model: model,
+                contents: prompt,
+                cancellationToken: cts.Token);
+
+            var text = response?.Candidates?[0]?.Content?.Parts?[0]?.Text?.Trim();
+            return string.IsNullOrWhiteSpace(text) ? null : text;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Gemini AI failed to generate query; falling back to static list");
+            return null;
+        }
     }
 
     /// <summary>
@@ -58,8 +120,22 @@ public class BackgroundPhotoService
         // Deterministic seed: same date always produces the same query + page + slot
         var seed   = nst.Year * 10000 + nst.DayOfYear;
         var rng    = new Random(seed);
-        var query  = Queries[rng.Next(Queries.Length)];
-        var page   = rng.Next(1, 6); // pages 1–5 (most relevant Pexels results)
+
+        // Primary: ask Gemini AI for a tailored Nepal keyword
+        var query = await GetGeminiQueryAsync();
+
+        if (query is null)
+        {
+            // Fallback: deterministic pick from static list
+            query = Queries[rng.Next(Queries.Length)];
+            _logger.LogInformation("Using static fallback query: {Query}", query);
+        }
+        else
+        {
+            _logger.LogInformation("Using Gemini-generated query: {Query}", query);
+        }
+
+        var page   = rng.Next(1, 16); // pages 1–15 (most relevant Pexels results)
         const int pageSize = 15;
 
         try
@@ -73,7 +149,8 @@ public class BackgroundPhotoService
             var photos = result?.photos;
             if (photos is { Count: > 0 })
             {
-                var photo = photos[seed % photos.Count];
+                //var photo = photos[seed % photos.Count];
+                var photo = photos[rng.Next(photos.Count)];
                 var data  = new BackgroundPhotoData
                 {
                     Url       = photo.source?.large2x ?? photo.source?.large ?? photo.source?.original ?? Fallback.Url,
@@ -82,6 +159,7 @@ public class BackgroundPhotoService
                     Source    = "Pexels",
                     SourceUrl = photo.photographerUrl ?? photo.url ?? "https://www.pexels.com",
                     Location  = "Nepal",
+                    SearchedQuery = query,
                 };
 
                 var expiresAt = nst.Date.AddDays(1) - nst;
@@ -124,6 +202,9 @@ public class BackgroundPhotoService
 
 public class BackgroundPhotoData
 {
+    [JsonPropertyName("searched_query")]
+    public string SearchedQuery { get; set; } = string.Empty;
+
     [JsonPropertyName("url")]
     public string Url { get; set; } = string.Empty;
 
