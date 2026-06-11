@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using System.Collections.Concurrent;
 using Google.GenAI;
 using Microsoft.Extensions.Caching.Memory;
 using PexelsDotNetSDK.Api;
@@ -11,6 +12,7 @@ public class BackgroundPhotoService
     private readonly IMemoryCache _cache;
     private readonly ILogger<BackgroundPhotoService> _logger;
     private readonly IConfiguration _config;
+    private static readonly ConcurrentDictionary<string, Lazy<Task<BackgroundPhotoData>>> InFlight = new();
 
     // Rotate through Nepal-themed queries for variety
     private static readonly string[] Queries =
@@ -114,6 +116,28 @@ public class BackgroundPhotoService
         var nst      = GetNepalTime();
         var cacheKey = $"pexels:photo:{nst:yyyy-MM-dd}";
 
+        if (_cache.TryGetValue<BackgroundPhotoData>(cacheKey, out var cached) && cached is not null)
+            return cached;
+
+        // Coalesce concurrent requests for the same day so only one call hits external APIs.
+        var inFlight = InFlight.GetOrAdd(
+            cacheKey,
+            _ => new Lazy<Task<BackgroundPhotoData>>(
+                () => FetchAndCacheDailyPhotoAsync(nst, cacheKey),
+                LazyThreadSafetyMode.ExecutionAndPublication));
+
+        try
+        {
+            return await inFlight.Value;
+        }
+        finally
+        {
+            InFlight.TryRemove(cacheKey, out _);
+        }
+    }
+
+    private async Task<BackgroundPhotoData> FetchAndCacheDailyPhotoAsync(DateTime nst, string cacheKey)
+    {
         if (_cache.TryGetValue<BackgroundPhotoData>(cacheKey, out var cached) && cached is not null)
             return cached;
 
