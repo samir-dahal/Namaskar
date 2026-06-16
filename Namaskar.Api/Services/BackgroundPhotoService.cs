@@ -14,38 +14,25 @@ public class BackgroundPhotoService
     private readonly IConfiguration _config;
     private static readonly ConcurrentDictionary<string, Lazy<Task<BackgroundPhotoData>>> InFlight = new();
 
-    // Rotate through Nepal-themed queries for variety
-    private static readonly string[] Queries =
+    // Minimal fallback if appsettings has no queries configured
+    private static readonly string[] FallbackQueries =
     [
-        // Nature & Geography
-        "nepal landscape",
+        "nepal mountains",
         "himalaya nepal",
-        "nepal river",
-        "nepal valley",
-        "nepal waterfall",
         "nepal lake",
-        "chitwan nepal",
-
-        // Cities & Landmarks
-        "kathmandu nepal",
-        "pokhara nepal",
-        "bhaktapur nepal",
-        "nepal temple",
-        "nepal stupa",
-        "nepal monastery",
-
-        // Culture & Life
-        "nepal village",
-        "nepal festival",
-        "nepal prayer flags",
-        "nepal market",
-        "nepal farmer",
-
-        // Mood & Atmosphere
+        "nepal waterfall",
         "nepal sunrise",
-        "nepal fog",
         "nepal sunset",
     ];
+
+    /// <summary>
+    /// Reads BackgroundPhotos:Queries from configuration, falling back to a minimal hardcoded list.
+    /// </summary>
+    private string[] GetQueries()
+    {
+        var queries = _config.GetSection("BackgroundPhotos:Queries").Get<string[]>();
+        return queries is { Length: > 0 } ? queries : FallbackQueries;
+    }
 
     // Reliable fallback photo (Pexels public domain)
     private static readonly BackgroundPhotoData Fallback = new()
@@ -150,8 +137,9 @@ public class BackgroundPhotoService
 
         if (query is null)
         {
-            // Fallback: deterministic pick from static list
-            query = Queries[rng.Next(Queries.Length)];
+            // Fallback: deterministic pick from configured list
+            var queries = GetQueries();
+            query = queries[rng.Next(queries.Length)];
             _logger.LogInformation("Using static fallback query: {Query}", query);
         }
         else
