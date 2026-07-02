@@ -165,7 +165,7 @@ public class BackgroundPhotoService
                 var photo = photos[rng.Next(photos.Count)];
                 var data  = new BackgroundPhotoData
                 {
-                    Url       = photo.source?.large2x ?? photo.source?.large ?? photo.source?.original ?? Fallback.Url,
+                    Url       = photo.source?.original ?? photo.source?.large2x ?? photo.source?.large ?? Fallback.Url,
                     Url4K     = photo.source?.original ?? Fallback.Url4K,
                     Photographer = photo.photographer ?? "Unknown",
                     Source    = "Pexels",
